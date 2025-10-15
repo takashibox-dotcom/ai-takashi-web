@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Takashi Web Client</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="config.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <header class="header">
+            <h1>AI Takashi Web Client</h1>
+            <div class="connection-status" id="connectionStatus">
+                <span class="status-indicator" id="statusIndicator"></span>
+                <span id="statusText">接続チェック中...</span>
+            </div>
+            <div class="session-info">
+                <span>セッション: </span>
+                <span id="sessionId">-</span>
+            </div>
+        </header>
+
+        <!-- メインコンテンツ -->
+        <main class="main-content">
+            <!-- タブナビゲーション -->
+            <nav class="tab-nav">
+                <button class="tab-button active" data-tab="chat">チャット</button>
+                <button class="tab-button" data-tab="tokens">トークン管理</button>
+                <button class="tab-button" data-tab="memory">メモリ管理</button>
+            </nav>
+
+            <!-- チャットタブ -->
+            <div id="chat-tab" class="tab-content active">
+                <div class="chat-layout">
+                    <!-- 左側パネル（設定・入力） -->
+                    <div class="left-panel">
+                        <!-- キャラクター管理 -->
+                        <div class="panel-group">
+                            <h3>キャラクター管理</h3>
+                            <div class="character-display" id="characterDisplay">AI_takashi</div>
+                            <select id="characterSelect" class="character-select">
+                                <option value="">デフォルト</option>
+                            </select>
+                            <div class="character-buttons">
+                                <button id="createCharacterBtn" class="btn btn-primary">新規作成</button>
+                                <button id="manageCharacterBtn" class="btn btn-secondary">管理</button>
+                            </div>
+                        </div>
+
+                        <!-- 画像選択 -->
+                        <div class="panel-group">
+                            <h3>画像</h3>
+                            <div class="image-display" id="imageDisplay">画像が選択されていません</div>
+                            <div class="image-buttons">
+                                <button id="selectImageBtn" class="btn btn-primary">画像を選択</button>
+                                <button id="clearImageBtn" class="btn btn-secondary">クリア</button>
+                            </div>
+                        </div>
+
+                        <!-- トークン使用量 -->
+                        <div class="panel-group">
+                            <h3>トークン使用量</h3>
+                            <div class="token-display" id="tokenDisplay">取得中...</div>
+                        </div>
+
+                        <!-- 応答時間 -->
+                        <div class="panel-group">
+                            <h3>応答時間</h3>
+                            <div class="response-time" id="responseTime">待機中</div>
+                        </div>
+
+                        <!-- セッション管理 -->
+                        <div class="panel-group">
+                            <h3>セッション管理</h3>
+                            <div class="session-buttons">
+                                <button id="newSessionBtn" class="btn btn-primary">新しいセッション</button>
+                                <button id="clearChatBtn" class="btn btn-secondary">チャットクリア</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 右側パネル（チャット履歴） -->
+                    <div class="right-panel">
+                        <div class="chat-history" id="chatHistory"></div>
+                        
+                        <!-- 入力エリア -->
+                        <div class="input-area">
+                            <div class="input-group">
+                                <textarea id="userInput" placeholder="メッセージを入力してください..." rows="4"></textarea>
+                                <button id="sendBtn" class="btn btn-primary btn-large">送信</button>
+                            </div>
+                            <div class="progress-bar" id="progressBar" style="display: none;">
+                                <div class="progress-fill"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- トークン管理タブ -->
+            <div id="tokens-tab" class="tab-content">
+                <div class="token-management">
+                    <div class="token-info">
+                        <h3>トークン使用量</h3>
+                        <div class="token-display-large" id="tokenDisplayLarge">取得中...</div>
+                    </div>
+                    <div class="token-stats" id="tokenStats">統計情報: データなし</div>
+                    <div class="token-buttons">
+                        <button id="resetTokenBtn" class="btn btn-warning">トークン使用量をリセット</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- メモリ管理タブ -->
+            <div id="memory-tab" class="tab-content">
+                <div class="memory-management">
+                    <div class="memory-list" id="memoryList"></div>
+                    <div class="memory-buttons">
+                        <button id="createMemoryBtn" class="btn btn-primary">新しいメモリ</button>
+                        <button id="saveMemoryBtn" class="btn btn-secondary">会話を記憶</button>
+                        <button id="refreshMemoryBtn" class="btn btn-secondary">更新</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- フッター -->
+        <footer class="footer">
+            <div class="footer-buttons">
+                <button id="exportBtn" class="btn btn-secondary">エクスポート</button>
+                <button id="backupBtn" class="btn btn-secondary">バックアップ</button>
+                <button id="aboutBtn" class="btn btn-secondary">このアプリについて</button>
+                <button id="themeBtn" class="btn btn-secondary">🌙</button>
+            </div>
+        </footer>
+    </div>
+
+    <!-- モーダルダイアログ -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- キャラクター作成ダイアログ -->
+    <div id="characterModal" class="modal">
+        <div class="modal-content large">
+            <span class="close">&times;</span>
+            <h2>キャラクター作成</h2>
+            <form id="characterForm">
+                <div class="form-group">
+                    <label for="charName">キャラクター名 *</label>
+                    <input type="text" id="charName" required>
+                </div>
+                <div class="form-group">
+                    <label for="charPersonality">性格・キャラクター設定</label>
+                    <textarea id="charPersonality" rows="4" placeholder="自由に記述してください..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="charSpeaking">話し方・口調</label>
+                    <textarea id="charSpeaking" rows="3" placeholder="例: 丁寧語で話す、関西弁で親しみやすく..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="charSpecialization">専門分野・得意なこと</label>
+                    <textarea id="charSpecialization" rows="3" placeholder="例: プログラミング、ビジネス戦略..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="charResponse">応答スタイル</label>
+                    <textarea id="charResponse" rows="3" placeholder="例: 簡潔で分かりやすく、詳しく丁寧に説明..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="charBackground">背景・設定</label>
+                    <textarea id="charBackground" rows="3" placeholder="例: 元エンジニアで現在はフリーランス..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="charCatchphrase">決まり文句・口癖</label>
+                    <input type="text" id="charCatchphrase" placeholder="例: 「なるほど〜」「そうですね〜」">
+                </div>
+                <div class="form-group">
+                    <label for="charGreeting">挨拶の仕方</label>
+                    <input type="text" id="charGreeting" placeholder="例: 「こんにちは！今日も一緒に学びましょう！」">
+                </div>
+                <div class="form-buttons">
+                    <button type="button" id="previewCharBtn" class="btn btn-secondary">プレビュー</button>
+                    <button type="submit" class="btn btn-primary">キャラクター作成</button>
+                    <button type="button" id="cancelCharBtn" class="btn btn-secondary">キャンセル</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

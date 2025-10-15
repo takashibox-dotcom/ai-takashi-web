@@ -1,0 +1,248 @@
+[
+  {
+    "response_time": 1.553255558013916,
+    "user_text_length": 9,
+    "ai_text_length": 56,
+    "timestamp": "2025-07-10T17:05:09.578002"
+  },
+  {
+    "response_time": 5.6797919273376465,
+    "user_text_length": 16,
+    "ai_text_length": 899,
+    "timestamp": "2025-07-10T17:24:56.442696"
+  },
+  {
+    "response_time": 12.93578815460205,
+    "user_text_length": 1196,
+    "ai_text_length": 1599,
+    "timestamp": "2025-07-11T09:39:41.466060"
+  },
+  {
+    "response_time": 6.870943069458008,
+    "user_text_length": 32,
+    "ai_text_length": 758,
+    "timestamp": "2025-07-11T09:41:24.638890"
+  },
+  {
+    "response_time": 17.388988256454468,
+    "user_text_length": 84,
+    "ai_text_length": 4262,
+    "timestamp": "2025-07-11T09:44:24.156031"
+  },
+  {
+    "response_time": 17.708186388015747,
+    "user_text_length": 194,
+    "ai_text_length": 4098,
+    "timestamp": "2025-07-11T09:45:34.731485"
+  },
+  {
+    "response_time": 4.071099519729614,
+    "user_text_length": 35,
+    "ai_text_length": 96,
+    "timestamp": "2025-07-11T13:07:40.842898"
+  },
+  {
+    "response_time": 3.655001640319824,
+    "user_text_length": 14,
+    "ai_text_length": 122,
+    "timestamp": "2025-07-11T13:08:28.113646"
+  },
+  {
+    "response_time": 6.838745832443237,
+    "user_text_length": 138,
+    "ai_text_length": 546,
+    "timestamp": "2025-07-11T13:14:17.938479"
+  },
+  {
+    "response_time": 20.79498291015625,
+    "user_text_length": 31,
+    "ai_text_length": 384,
+    "timestamp": "2025-07-11T13:15:18.197608"
+  },
+  {
+    "response_time": 7.924278736114502,
+    "user_text_length": 21,
+    "ai_text_length": 683,
+    "timestamp": "2025-07-11T13:23:27.558760"
+  },
+  {
+    "response_time": 5.374301433563232,
+    "user_text_length": 43,
+    "ai_text_length": 471,
+    "timestamp": "2025-07-11T13:24:57.520521"
+  },
+  {
+    "response_time": 13.921438694000244,
+    "user_text_length": 39,
+    "ai_text_length": 274,
+    "timestamp": "2025-07-11T13:25:55.657823"
+  },
+  {
+    "response_time": 7.694026708602905,
+    "user_text_length": 24,
+    "ai_text_length": 927,
+    "timestamp": "2025-07-11T13:27:11.893329"
+  },
+  {
+    "response_time": 5.496597766876221,
+    "user_text_length": 4,
+    "ai_text_length": 456,
+    "timestamp": "2025-07-11T13:27:55.773518"
+  },
+  {
+    "response_time": 8.818349361419678,
+    "user_text_length": 4,
+    "ai_text_length": 3959,
+    "timestamp": "2025-07-11T13:28:47.540485"
+  },
+  {
+    "response_time": 6.9905970096588135,
+    "user_text_length": 9,
+    "ai_text_length": 898,
+    "timestamp": "2025-07-11T13:30:39.488662"
+  },
+  {
+    "response_time": 6.08831000328064,
+    "user_text_length": 17,
+    "ai_text_length": 1279,
+    "timestamp": "2025-07-11T13:33:10.415666"
+  },
+  {
+    "response_time": 1.3243451118469238,
+    "user_text_length": 6,
+    "ai_text_length": 109,
+    "timestamp": "2025-07-11T13:36:15.783236"
+  },
+  {
+    "response_time": 11.907114744186401,
+    "user_text_length": 1382,
+    "ai_text_length": 1018,
+    "timestamp": "2025-07-11T14:51:46.671999"
+  },
+  {
+    "response_time": 9.404680252075195,
+    "user_text_length": 178,
+    "ai_text_length": 2094,
+    "timestamp": "2025-07-11T14:52:44.501226"
+  },
+  {
+    "response_time": 9.859171390533447,
+    "user_text_length": 44,
+    "ai_text_length": 401,
+    "timestamp": "2025-07-11T15:12:06.441977"
+  },
+  {
+    "response_time": 5.419195652008057,
+    "user_text_length": 78,
+    "ai_text_length": 480,
+    "timestamp": "2025-07-11T15:13:10.171646"
+  },
+  {
+    "response_time": 4.917283058166504,
+    "user_text_length": 27,
+    "ai_text_length": 701,
+    "timestamp": "2025-07-11T15:14:32.866711"
+  },
+  {
+    "response_time": 12.28821063041687,
+    "user_text_length": 162,
+    "ai_text_length": 2294,
+    "timestamp": "2025-07-11T15:16:39.367074"
+  },
+  {
+    "response_time": 4.404148817062378,
+    "user_text_length": 25,
+    "ai_text_length": 935,
+    "timestamp": "2025-07-11T15:18:43.047678"
+  },
+  {
+    "response_time": 9.957430839538574,
+    "user_text_length": 15,
+    "ai_text_length": 1343,
+    "timestamp": "2025-07-11T15:21:00.565852"
+  },
+  {
+    "response_time": 9.56191897392273,
+    "user_text_length": 37,
+    "ai_text_length": 2267,
+    "timestamp": "2025-07-11T15:22:00.068275"
+  },
+  {
+    "response_time": 8.813815832138062,
+    "user_text_length": 8,
+    "ai_text_length": 1470,
+    "timestamp": "2025-07-11T15:28:52.566689"
+  },
+  {
+    "response_time": 10.140660524368286,
+    "user_text_length": 383,
+    "ai_text_length": 701,
+    "timestamp": "2025-07-11T15:30:01.005388"
+  },
+  {
+    "response_time": 13.06913447380066,
+    "user_text_length": 12,
+    "ai_text_length": 2152,
+    "timestamp": "2025-07-11T15:31:54.609165"
+  },
+  {
+    "response_time": 9.567202091217041,
+    "user_text_length": 21,
+    "ai_text_length": 959,
+    "timestamp": "2025-07-11T15:35:36.861667"
+  },
+  {
+    "response_time": 12.233745813369751,
+    "user_text_length": 23,
+    "ai_text_length": 1098,
+    "timestamp": "2025-07-11T15:36:18.051751"
+  },
+  {
+    "response_time": 15.398617267608643,
+    "user_text_length": 52,
+    "ai_text_length": 971,
+    "timestamp": "2025-07-11T15:37:37.630196"
+  },
+  {
+    "response_time": 6.841849327087402,
+    "user_text_length": 27,
+    "ai_text_length": 813,
+    "timestamp": "2025-07-11T15:39:36.094420"
+  },
+  {
+    "response_time": 7.0322935581207275,
+    "user_text_length": 32,
+    "ai_text_length": 680,
+    "timestamp": "2025-07-11T15:40:39.951516"
+  },
+  {
+    "response_time": 9.876977920532227,
+    "user_text_length": 3614,
+    "ai_text_length": 1272,
+    "timestamp": "2025-07-14T10:12:48.834415"
+  },
+  {
+    "response_time": 13.624484539031982,
+    "user_text_length": 164,
+    "ai_text_length": 2677,
+    "timestamp": "2025-07-14T10:30:18.034160"
+  },
+  {
+    "response_time": 11.52289867401123,
+    "user_text_length": 46,
+    "ai_text_length": 2590,
+    "timestamp": "2025-07-14T10:31:54.545011"
+  },
+  {
+    "response_time": 15.031682252883911,
+    "user_text_length": 15,
+    "ai_text_length": 5444,
+    "timestamp": "2025-07-14T10:33:16.511342"
+  },
+  {
+    "response_time": 5.153035879135132,
+    "user_text_length": 18,
+    "ai_text_length": 1224,
+    "timestamp": "2025-07-14T10:34:28.937249"
+  }
+]
