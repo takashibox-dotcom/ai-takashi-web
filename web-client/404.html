@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ページが見つかりません - AI Takashi Web Client</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="config.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div style="text-align: center; padding: 4rem 2rem;">
+            <h1 style="font-size: 4rem; color: #667eea; margin-bottom: 1rem;">404</h1>
+            <h2 style="margin-bottom: 2rem;">ページが見つかりません</h2>
+            <p style="margin-bottom: 2rem; color: #6c757d;">
+                お探しのページは存在しないか、移動された可能性があります。
+            </p>
+            <div style="margin-bottom: 2rem;">
+                <button onclick="goHome()" class="btn btn-primary" style="margin-right: 1rem;">
+                    🏠 ホームに戻る
+                </button>
+                <button onclick="goBack()" class="btn btn-secondary">
+                    ⬅️ 戻る
+                </button>
+            </div>
+            <div style="margin-top: 3rem; padding: 2rem; background-color: #f8f9fa; border-radius: 10px;">
+                <h3>AI Takashi Web Client</h3>
+                <p>AIとのチャット、キャラクター管理、画像認識などの機能をお楽しみください。</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function goHome() {
+            window.location.href = '/';
+        }
+        
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                goHome();
+            }
+        }
+        
+        // 自動的にホームにリダイレクト（オプション）
+        // setTimeout(goHome, 5000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Takashi Web Client - Updated 2025-01-21 16:10:00</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+    <link rel="stylesheet" href="styles.css?v=20250121164000">
+    <script src="config.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <header class="header">
+            <h1>AI Takashi Web Client</h1>
+            <div class="connection-status" id="connectionStatus">
+                <span class="status-indicator" id="statusIndicator"></span>
+                <span id="statusText">接続チェック中...</span>
+            </div>
+            <div class="session-info">
+                <span>セッション: </span>
+                <span id="sessionId">-</span>
+            </div>
+        </header>
+
+        <!-- メインコンテンツ -->
+        <main class="main-content">
+            <!-- タブナビゲーション -->
+            <nav class="tab-nav" role="tablist" aria-label="メイン機能タブ">
+                <button class="tab-button active" data-tab="chat-tab" role="tab" aria-selected="true" aria-controls="chat-tab" id="chat-tab-button">チャット</button>
+                <button class="tab-button" data-tab="tokens-tab" role="tab" aria-selected="false" aria-controls="tokens-tab" id="tokens-tab-button">トークン管理</button>
+                <button class="tab-button" data-tab="memory-tab" role="tab" aria-selected="false" aria-controls="memory-tab" id="memory-tab-button">会話履歴</button>
+                <button class="tab-button" data-tab="account-tab" role="tab" aria-selected="false" aria-controls="account-tab" id="account-tab-button">アカウント</button>
+            </nav>
+
+            <!-- チャットタブ -->
+            <div id="chat-tab" class="tab-content active" role="tabpanel" aria-labelledby="chat-tab-button" aria-hidden="false">
+                <div class="chat-layout">
+                    <!-- 左側パネル（設定・入力） -->
+                    <div class="left-panel">
+                        <!-- キャラクター管理 -->
+                        <div class="panel-group">
+                            <h3>キャラクター管理</h3>
+                            <div class="character-display" id="characterDisplay">AI_takashi</div>
+                            <select id="characterSelect" class="character-select">
+                                <option value="">デフォルト</option>
+                            </select>
+                            <div class="character-buttons">
+                                <button id="createCharacterBtn" class="btn btn-primary">新規作成</button>
+                                <button id="manageCharacterBtn" class="btn btn-secondary">管理</button>
+                            </div>
+                        </div>
+
+                        <!-- 画像選択 -->
+                        <div class="panel-group">
+                            <h3>画像認識</h3>
+                            <div class="image-selection">
+                                <div id="imageDisplay">画像が選択されていません</div>
+                                <div class="image-buttons">
+                                    <button id="selectImageBtn" class="btn btn-primary">画像選択</button>
+                                    <button id="clearImageBtn" class="btn btn-secondary">クリア</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- セッション管理 -->
+                        <div class="panel-group">
+                            <h3>セッション管理</h3>
+                            <div class="session-buttons">
+                                <button id="newSessionBtn" class="btn btn-primary">新規セッション</button>
+                                <button id="clearChatBtn" class="btn btn-secondary">チャットクリア</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 右側パネル（チャット履歴） -->
+                    <div class="right-panel">
+                        <div class="chat-container">
+                            <div id="chatHistory" class="chat-history"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- トークン管理タブ -->
+            <div id="tokens-tab" class="tab-content" role="tabpanel" aria-labelledby="tokens-tab-button" aria-hidden="true">
+                <div class="token-management">
+                    <h3>トークン使用量</h3>
+                    <div class="token-display" id="tokenDisplayLarge">読み込み中...</div>
+                    <div class="token-actions">
+                        <button id="resetTokenBtn" class="btn btn-danger">トークンリセット</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 会話履歴タブ -->
+            <div id="memory-tab" class="tab-content" role="tabpanel" aria-labelledby="memory-tab-button" aria-hidden="true">
+                <div class="conversation-history">
+                    <h3>会話履歴</h3>
+                    <div class="history-controls">
+                        <!-- 検索セクション -->
+                        <div class="search-section" style="margin-bottom: 1rem;">
+                            <h4 style="margin: 0 0 0.5rem 0; color: #495057;">会話検索</h4>
+                            <div class="search-controls" style="display: flex; gap: 0.5rem; align-items: center;">
+                                <input type="text" id="historySearchInput" placeholder="会話を検索..." style="flex: 1; padding: 0.5rem; border: 1px solid #ddd; border-radius: 5px;">
+                                <button id="historySearchBtn" class="btn btn-primary">検索</button>
+                                <button id="clearSearchBtn" class="btn btn-secondary">クリア</button>
+                            </div>
+                        </div>
+                        
+                        <!-- 自動保存セクション -->
+                        <div class="auto-save-section" style="margin-bottom: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 5px; border: 1px solid #e9ecef;">
+                            <h4 style="margin: 0 0 0.5rem 0; color: #495057;">自動保存設定</h4>
+                            <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                                <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                    <input type="checkbox" id="autoSaveToggle" checked style="transform: scale(1.2);">
+                                    <span>自動保存を有効にする（5分間隔）</span>
+                                </label>
+                                <span id="autoSaveStatus" style="color: #28a745; font-weight: bold;">● 自動保存中</span>
+                                <span id="lastSaveTime" style="color: #6c757d; font-size: 0.9rem;">最終保存: --</span>
+                            </div>
+                        </div>
+                        
+                        <!-- アクションセクション -->
+                        <div class="action-section" style="margin-bottom: 1rem;">
+                            <h4 style="margin: 0 0 0.5rem 0; color: #495057;">会話履歴操作</h4>
+                            <div class="history-actions" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                <button id="refreshHistoryBtn" class="btn btn-primary">更新</button>
+                                <button id="saveConversationBtn" class="btn btn-success">手動保存</button>
+                                <button id="exportBtn" class="btn btn-info">エクスポート</button>
+                                <button id="clearHistoryBtn" class="btn btn-danger">全削除</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="conversationHistoryList" class="conversation-list" style="border: 1px solid #e9ecef; border-radius: 5px; padding: 0.5rem; background: white; min-height: 200px;">
+                        <div class="loading">読み込み中...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- アカウントタブ -->
+            <div id="account-tab" class="tab-content" role="tabpanel" aria-labelledby="account-tab-button" aria-hidden="true">
+                <div class="account-management">
+                    <h3>アカウント管理</h3>
+                    <div id="accountStatus">
+                        <!-- ログイン状態表示 -->
+                        <div class="login-section" id="loginSection">
+                            <h3>ログイン</h3>
+                            <div class="login-form">
+                                <div class="form-group">
+                                    <label for="loginUsername">ユーザー名またはメールアドレス:</label>
+                                    <input type="text" id="loginUsername" placeholder="ユーザー名またはメールアドレス">
+                                </div>
+                                <div class="form-group">
+                                    <label for="loginPassword">パスワード:</label>
+                                    <input type="password" id="loginPassword" placeholder="パスワード">
+                                </div>
+                                <div class="form-buttons">
+                                    <button id="loginBtn" class="btn btn-primary">ログイン</button>
+                                    <button id="showRegisterBtn" class="btn btn-secondary">新規登録</button>
+                                    <button id="showResetPasswordBtn" class="btn btn-link">パスワードを忘れた場合</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 新規登録フォーム -->
+                        <div class="register-section" id="registerSection" style="display: none;">
+                            <h3>新規登録</h3>
+                            <div class="register-form">
+                                <div class="form-group">
+                                    <label for="registerUsername">ユーザー名:</label>
+                                    <input type="text" id="registerUsername" placeholder="ユーザー名">
+                                </div>
+                                <div class="form-group">
+                                    <label for="registerEmail">メールアドレス:</label>
+                                    <input type="email" id="registerEmail" placeholder="メールアドレス">
+                                </div>
+                                <div class="form-group">
+                                    <label for="registerPassword">パスワード:</label>
+                                    <input type="password" id="registerPassword" placeholder="パスワード（6文字以上）">
+                                </div>
+                                <div class="form-group">
+                                    <label for="registerPasswordConfirm">パスワード確認:</label>
+                                    <input type="password" id="registerPasswordConfirm" placeholder="パスワード確認">
+                                </div>
+                                <div class="form-buttons">
+                                    <button id="registerBtn" class="btn btn-primary">登録</button>
+                                    <button id="showLoginBtn" class="btn btn-secondary">ログインに戻る</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- パスワードリセットフォーム -->
+                        <div class="reset-password-section" id="resetPasswordSection" style="display: none;">
+                            <h3>パスワードリセット</h3>
+                            <div class="reset-password-form">
+                                <div class="form-group">
+                                    <label for="resetEmail">メールアドレス:</label>
+                                    <input type="email" id="resetEmail" placeholder="登録済みのメールアドレス">
+                                </div>
+                                <div class="form-buttons">
+                                    <button id="resetPasswordBtn" class="btn btn-primary">リセット</button>
+                                    <button id="backToLoginBtn" class="btn btn-secondary">ログインに戻る</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ユーザープロフィール -->
+                        <div class="user-profile" id="userProfile" style="display: none;">
+                            <h3>プロフィール</h3>
+                            <div id="profileInfo" class="profile-info"></div>
+                            <div class="profile-actions">
+                                <button id="editProfileBtn" class="btn btn-primary">プロフィール編集</button>
+                                <button id="changePasswordBtn" class="btn btn-secondary">パスワード変更</button>
+                                <button id="logoutBtn" class="btn btn-danger">ログアウト</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- フッター -->
+        <footer class="footer">
+            <div class="footer-buttons">
+                <button id="backupBtn" class="btn btn-secondary">バックアップ</button>
+                <button id="aboutBtn" class="btn btn-secondary">アプリについて</button>
+                <button id="themeBtn" class="btn btn-secondary">🌙</button>
+            </div>
+        </footer>
+    </div>
+
+    <!-- プロフィール編集モーダル -->
+    <div id="profileModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" id="closeProfileModal">&times;</span>
+            <h3>プロフィール編集</h3>
+            <div class="form-group">
+                <label for="editDisplayName">表示名:</label>
+                <input type="text" id="editDisplayName">
+            </div>
+            <div class="form-group">
+                <label for="editBio">自己紹介:</label>
+                <textarea id="editBio" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="editAvatar">アバターURL:</label>
+                <input type="url" id="editAvatar">
+            </div>
+            <div class="form-actions">
+                <button id="saveProfileBtn" class="btn btn-primary">保存</button>
+                <button id="cancelProfileBtn" class="btn btn-secondary">キャンセル</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- パスワード変更モーダル -->
+    <div id="passwordModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" id="closePasswordModal">&times;</span>
+            <h3>パスワード変更</h3>
+            <div class="form-group">
+                <label for="currentPassword">現在のパスワード:</label>
+                <input type="password" id="currentPassword">
+            </div>
+            <div class="form-group">
+                <label for="newPassword">新しいパスワード:</label>
+                <input type="password" id="newPassword">
+            </div>
+            <div class="form-group">
+                <label for="confirmNewPassword">新しいパスワード確認:</label>
+                <input type="password" id="confirmNewPassword">
+            </div>
+            <div class="form-actions">
+                <button id="savePasswordBtn" class="btn btn-primary">変更</button>
+                <button id="cancelPasswordBtn" class="btn btn-secondary">キャンセル</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- キャラクター作成モーダル -->
+    <div id="characterModal" class="modal" style="display: none;">
+        <div class="modal-content character-modal">
+            <span class="close" id="closeCharacterModal">&times;</span>
+            <h3>キャラクター作成</h3>
+            <form id="characterForm">
+                <div class="form-group">
+                    <label for="charName">キャラクター名 *</label>
+                    <input type="text" id="charName" required>
+                </div>
+                <div class="form-group">
+                    <label for="charPersonality">性格</label>
+                    <textarea id="charPersonality" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="charSpeaking">話し方</label>
+                    <textarea id="charSpeaking" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="charSpecialization">専門分野</label>
+                    <input type="text" id="charSpecialization">
+                </div>
+                <div class="form-group">
+                    <label for="charResponse">応答スタイル</label>
+                    <textarea id="charResponse" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="charBackground">背景</label>
+                    <textarea id="charBackground" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="charCatchphrase">キャッチフレーズ</label>
+                    <input type="text" id="charCatchphrase">
+                </div>
+                <div class="form-group">
+                    <label for="charGreeting">挨拶</label>
+                    <textarea id="charGreeting" rows="2"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="previewCharBtn" class="btn btn-info">プレビュー</button>
+                    <button type="submit" class="btn btn-primary">作成</button>
+                    <button type="button" id="cancelCharBtn" class="btn btn-secondary">キャンセル</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- メモリ詳細モーダル -->
+    <div id="memoryDetailModal" class="modal" style="display: none;">
+        <div class="modal-content memory-detail">
+            <span class="close" id="closeMemoryDetailModal">&times;</span>
+            <h3 id="memoryDetailTitle">メモリ詳細</h3>
+            <div class="memory-detail-content">
+                <div class="memory-meta">
+                    <span class="memory-category" id="memoryDetailCategory"></span>
+                    <span class="memory-importance" id="memoryDetailImportance"></span>
+                    <span class="memory-date" id="memoryDetailDate"></span>
+                    <span class="memory-character" id="memoryDetailCharacter"></span>
+                </div>
+                <div id="memoryDetailTags" style="display: none;">
+                    <h4>タグ:</h4>
+                    <div id="memoryDetailTagsList"></div>
+                </div>
+                <div class="memory-text" id="memoryDetailText"></div>
+            </div>
+            <div class="memory-actions">
+                <button id="editMemoryFromDetailBtn" class="btn btn-warning">編集</button>
+                <button id="deleteMemoryFromDetailBtn" class="btn btn-danger">削除</button>
+                <button id="closeMemoryDetailBtn" class="btn btn-secondary">閉じる</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- チャット入力コンテナ（全画面固定） -->
+    <div class="chat-input-container">
+        <div class="progress-bar" id="progressBar" style="display: none;"></div>
+        <div class="response-time" id="responseTime">待機中</div>
+        <div class="input-group">
+            <textarea id="userInput" placeholder="メッセージを入力してください..."></textarea>
+            <button id="sendBtn" class="btn btn-primary">送信</button>
+        </div>
+    </div>
+
+    <script src="app.js?v=20250121162000"></script>
+</body>
+</html>
